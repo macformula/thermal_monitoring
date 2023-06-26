@@ -13,6 +13,9 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.settings
+[Rr]elease
+[Dd]ebug
 
 # External tool builders
 .externalToolBuilders/
@@ -22,9 +25,6 @@ local.properties
 
 # PyDev specific (Python IDE for Eclipse)
 *.pydevproject
-
-# CDT-specific (C/C++ Development Tooling)
-.cproject
 
 # CDT- autotools
 .autotools
