@@ -75,6 +75,8 @@ uint16_t volatile adc_vals[NUM_ADC_CHANNELS] = {};
 uint8_t duty_cycle = 0;
 uint8_t start_fan_pwm = 0;
 
+//static int8_t min_temp = 25;
+//static int8_t max_temp = 25;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -131,6 +133,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) //ISR triggered by t
 		min_temp = getMin(temp_vals, NUM_ADC_CHANNELS, &min_ID);
 		max_temp = getMax(temp_vals, NUM_ADC_CHANNELS, &max_ID);
 		avg_temp = getAvg(temp_vals, NUM_ADC_CHANNELS);
+		//avg_temp = (max_temp + min_temp)/2;
 
 		/*-------------------------CAN TRANSMISSION-------------------------*/
 		//TMS->BMS Broadcast
@@ -144,6 +147,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim) //ISR triggered by t
 		TxData[7] = CHECKSUM_DECODED_CONSTANT + (THERMISTOR_MODULE_NUMBER + (uint8_t)min_temp + (uint8_t)max_temp+ (uint8_t)avg_temp + NUM_THERMISTORS + max_ID + min_ID);
 
 		HAL_CAN_AddTxMessage(&hcan1, &Tx_BMS_broadcast, TxData, &TxMailbox);
+		HAL_GPIO_TogglePin(DEBUG_LED_RED_GPIO_Port, DEBUG_LED_RED_Pin);
 
 		/*-------------------------FAN PWM-------------------------*/
 		if (start_fan_pwm)
@@ -220,6 +224,15 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+//	  while(max_temp < 100) {
+//		  HAL_Delay(1000);
+//		  max_temp++;
+//	  }
+
+//	  while(min_temp > 0) {
+//		  HAL_Delay(1000);
+//		  min_temp--;
+//	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
