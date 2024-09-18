@@ -97,15 +97,12 @@ def temp_to_fan(temp: float) -> int:
     )
 
 
-table = [(temp_to_adc(temp), temp) for temp in range(-40, 121, 5)]
+def table_entry(temp):
+    adc = temp_to_adc(temp)
+    fan = temp_to_fan(temp)
+    return f"{{{adc}, {temp}, {fan}}},"
 
 
-def print_table(table):
-
-    def table_entry(adc, temp):
-        return f"{{{adc}, {temp}, {temp_to_fan(temp)}}},"
-
-    print("\n".join(starmap(table_entry, table)))
-
-
-print_table(table)
+temperatures = range(-40, 120 + 1, 5)
+entries = map(table_entry, temperatures)
+print("\n".join(entries))
